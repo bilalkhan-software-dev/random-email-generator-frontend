@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,13 +17,20 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
-import { FiMail, FiLock, FiEye, FiEyeOff, FiUser, FiArrowLeft } from "react-icons/fi";
+import {
+  FiMail,
+  FiLock,
+  FiEye,
+  FiEyeOff,
+  FiUser,
+  FiArrowLeft,
+} from "react-icons/fi";
 
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error, message } = useSelector((state) => state.auth);
-  
+
   const [showPassword, setShowPassword] = React.useState(false);
   const [snackbar, setSnackbar] = React.useState({
     open: false,
@@ -36,14 +43,12 @@ const Register = () => {
       .min(2, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
-    username: Yup.string()
-      .email("Invalid email")
-      .required("Email is required"),
+    username: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .min(8, "Minimum 8 characters")
       // .matches(
-        // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        // "Must contain uppercase, lowercase, number and special character"
+      // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      // "Must contain uppercase, lowercase, number and special character"
       // )
       .required("Required"),
     confirmPassword: Yup.string()
@@ -79,7 +84,7 @@ const Register = () => {
       });
       setTimeout(() => navigate("/login"), 2000);
     }
-    
+
     if (error) {
       setSnackbar({
         open: true,
@@ -90,19 +95,21 @@ const Register = () => {
   }, [message, error, navigate]);
 
   const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
   return (
-    <Box sx={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      minHeight: "100vh",
-      backgroundColor: "rgb(17, 24, 39)",
-      p: 3,
-    }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        backgroundColor: "rgb(17, 24, 39)",
+        p: 3,
+      }}
+    >
       <Button
         startIcon={<FiArrowLeft />}
         onClick={() => navigate(-1)}
@@ -117,17 +124,23 @@ const Register = () => {
         Back
       </Button>
 
-      <Paper elevation={3} sx={{
-        p: 4,
-        width: "100%",
-        maxWidth: "400px",
-        backgroundColor: "rgb(31, 41, 55)",
-      }}>
-        <Typography variant="h4" sx={{
-          color: "white",
-          textAlign: "center",
-          mb: 4,
-        }}>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          width: "100%",
+          maxWidth: "400px",
+          backgroundColor: "rgb(31, 41, 55)",
+        }}
+      >
+        <Typography
+          variant="h4"
+          sx={{
+            color: "white",
+            textAlign: "center",
+            mb: 4,
+          }}
+        >
           Create Account
         </Typography>
 
@@ -291,21 +304,23 @@ const Register = () => {
             )}
           </Button>
 
-          <Typography sx={{
-            color: "rgb(156, 163, 175)",
-            textAlign: "center",
-            mt: 2,
-          }}>
+          <Typography
+            sx={{
+              color: "rgb(156, 163, 175)",
+              textAlign: "center",
+              mt: 2,
+            }}
+          >
             Already have an account?{" "}
-            <a
-              href="/login"
+            <Link
+              to="/login"
               style={{
                 color: "rgb(59, 130, 246)",
                 textDecoration: "none",
               }}
             >
               Login
-            </a>
+            </Link>
           </Typography>
         </form>
       </Paper>
