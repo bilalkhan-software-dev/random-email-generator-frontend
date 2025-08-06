@@ -1,0 +1,331 @@
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUserAction } from "../Redux/Auth/authAction";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  FormControl,
+  InputAdornment,
+  IconButton,
+  Snackbar,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiUser, FiArrowLeft } from "react-icons/fi";
+
+const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error, message } = useSelector((state) => state.auth);
+  
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [snackbar, setSnackbar] = React.useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
+
+  const validationSchema = Yup.object({
+    fullName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    username: Yup.string()
+      .email("Invalid email")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(8, "Minimum 8 characters")
+      // .matches(
+        // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        // "Must contain uppercase, lowercase, number and special character"
+      // )
+      .required("Required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const { confirmPassword, ...registrationData } = values;
+        await dispatch(registerUserAction(registrationData));
+        setSubmitting(false);
+      } catch (error) {
+        setSubmitting(false);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (message) {
+      setSnackbar({
+        open: true,
+        message: message,
+        severity: "success",
+      });
+      setTimeout(() => navigate("/login"), 2000);
+    }
+    
+    if (error) {
+      setSnackbar({
+        open: true,
+        message: error,
+        severity: "error",
+      });
+    }
+  }, [message, error, navigate]);
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({ ...prev, open: false }));
+  };
+
+  return (
+    <Box sx={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: "100vh",
+      backgroundColor: "rgb(17, 24, 39)",
+      p: 3,
+    }}>
+      <Button
+        startIcon={<FiArrowLeft />}
+        onClick={() => navigate(-1)}
+        sx={{
+          position: "absolute",
+          top: 60,
+          left: 20,
+          padding: "8px",
+          color: "rgb(156, 163, 175)",
+        }}
+      >
+        Back
+      </Button>
+
+      <Paper elevation={3} sx={{
+        p: 4,
+        width: "100%",
+        maxWidth: "400px",
+        backgroundColor: "rgb(31, 41, 55)",
+      }}>
+        <Typography variant="h4" sx={{
+          color: "white",
+          textAlign: "center",
+          mb: 4,
+        }}>
+          Create Account
+        </Typography>
+
+        <form onSubmit={formik.handleSubmit}>
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <TextField
+              id="fullName"
+              name="fullName"
+              label="Full Name"
+              type="text"
+              variant="outlined"
+              value={formik.values.fullName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+              helperText={formik.touched.fullName && formik.errors.fullName}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FiUser color="rgb(156, 163, 175)" />
+                  </InputAdornment>
+                ),
+                sx: {
+                  color: "white",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "rgb(75, 85, 99)",
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: { color: "rgb(156, 163, 175)" },
+              }}
+            />
+          </FormControl>
+
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <TextField
+              id="username"
+              name="username"
+              label="Email"
+              type="email"
+              variant="outlined"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username && formik.errors.username}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FiMail color="rgb(156, 163, 175)" />
+                  </InputAdornment>
+                ),
+                sx: {
+                  color: "white",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "rgb(75, 85, 99)",
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: { color: "rgb(156, 163, 175)" },
+              }}
+            />
+          </FormControl>
+
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <TextField
+              id="password"
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              variant="outlined"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FiLock color="rgb(156, 163, 175)" />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                      sx={{ color: "rgb(156, 163, 175)" }}
+                    >
+                      {showPassword ? <FiEyeOff /> : <FiEye />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+                sx: {
+                  color: "white",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "rgb(75, 85, 99)",
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: { color: "rgb(156, 163, 175)" },
+              }}
+            />
+          </FormControl>
+
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <TextField
+              id="confirmPassword"
+              name="confirmPassword"
+              label="Confirm Password"
+              type={showPassword ? "text" : "password"}
+              variant="outlined"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.confirmPassword &&
+                Boolean(formik.errors.confirmPassword)
+              }
+              helperText={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FiLock color="rgb(156, 163, 175)" />
+                  </InputAdornment>
+                ),
+                sx: {
+                  color: "white",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "rgb(75, 85, 99)",
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: { color: "rgb(156, 163, 175)" },
+              }}
+            />
+          </FormControl>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={formik.isSubmitting || loading}
+            sx={{
+              py: 1.5,
+              mb: 2,
+              backgroundColor: "rgb(59, 130, 246)",
+              "&:hover": { backgroundColor: "rgb(37, 99, 235)" },
+            }}
+          >
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Register"
+            )}
+          </Button>
+
+          <Typography sx={{
+            color: "rgb(156, 163, 175)",
+            textAlign: "center",
+            mt: 2,
+          }}>
+            Already have an account?{" "}
+            <a
+              href="/login"
+              style={{
+                color: "rgb(59, 130, 246)",
+                textDecoration: "none",
+              }}
+            >
+              Login
+            </a>
+          </Typography>
+        </form>
+      </Paper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
+};
+
+export default Register;
