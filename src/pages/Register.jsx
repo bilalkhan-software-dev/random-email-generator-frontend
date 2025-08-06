@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUserAction } from "../Redux/Auth/authAction";
+import { logoutUserAction, registerUserAction } from "../Redux/Auth/authAction";
 import {
   Box,
   Button,
@@ -29,7 +29,12 @@ import {
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, error, message } = useSelector((state) => state.auth);
+  const { loading, error, message, user } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logoutUserAction());
+    navigate("/");
+  };
 
   const [showPassword, setShowPassword] = React.useState(false);
   const [snackbar, setSnackbar] = React.useState({
@@ -97,6 +102,26 @@ const Register = () => {
   const handleCloseSnackbar = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
+
+  if (user) {
+    return (
+      <Box sx={{ textAlign: "center", mt: 5 }}>
+        <Typography variant="h6" color="white">
+          You are already logged in!
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate("/profile")}
+        >
+          Go to Profile
+        </Button>
+        <Button variant="outlined" color="secondary" onClick={handleLogout}>
+          Logout
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Box
