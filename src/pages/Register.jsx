@@ -73,31 +73,26 @@ const Register = () => {
       try {
         const { confirmPassword, ...registrationData } = values;
         await dispatch(registerUserAction(registrationData));
+        setSnackbar({
+          open: true,
+          message: message,
+          severity: "success",
+        });
+        navigate("/");
+        setTimeout(() => navigate("/"), 3000);
+
         setSubmitting(false);
       } catch (error) {
+        console.log("Error: ", error);
+        setSnackbar({
+          open: true,
+          message: error,
+          severity: "error",
+        });
         setSubmitting(false);
       }
     },
   });
-
-  useEffect(() => {
-    if (message) {
-      setSnackbar({
-        open: true,
-        message: message,
-        severity: "success",
-      });
-      setTimeout(() => navigate("/login"), 2000);
-    }
-
-    if (error) {
-      setSnackbar({
-        open: true,
-        message: error,
-        severity: "error",
-      });
-    }
-  }, [message, error, navigate]);
 
   const handleCloseSnackbar = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
@@ -105,14 +100,17 @@ const Register = () => {
 
   if (user) {
     return (
-      <Box sx={{ textAlign: "center", mt: 5 }}>
+      <Box sx={{ textAlign: "center", mt: 10 }}>
         <Typography variant="h6" color="white">
-          You are already logged in!
+          You are Successfully logged in!
         </Typography>
         <Button
           variant="contained"
           color="primary"
           onClick={() => navigate("/profile")}
+          sx={{
+            marginRight: 2,
+          }}
         >
           Go to Profile
         </Button>
@@ -134,29 +132,20 @@ const Register = () => {
         backgroundColor: "rgb(17, 24, 39)",
         p: 3,
       }}
+      className="bg-gradient-to-b from-gray-800 to-gray-950/100 mt-4"
     >
-      <Button
-        startIcon={<FiArrowLeft />}
-        onClick={() => navigate(-1)}
-        sx={{
-          position: "absolute",
-          top: 60,
-          left: 20,
-          padding: "8px",
-          color: "rgb(156, 163, 175)",
-        }}
-      >
-        Back
-      </Button>
-
       <Paper
         elevation={3}
         sx={{
           p: 4,
           width: "100%",
           maxWidth: "400px",
-          backgroundColor: "rgb(31, 41, 55)",
+          backgroundColor: "rgb(31, 41, 59)",
+          border: "4px solid",
+          borderColor: "divider", // or use a specific color
+          borderRadius: 4, // or "4px" or any value you prefer
         }}
+        className="shadow-2xl"
       >
         <Typography
           variant="h4"
@@ -313,13 +302,12 @@ const Register = () => {
           <Button
             type="submit"
             fullWidth
-            variant="contained"
+            variant="outlined"
             disabled={formik.isSubmitting || loading}
             sx={{
               py: 1.5,
               mb: 2,
-              backgroundColor: "rgb(59, 130, 246)",
-              "&:hover": { backgroundColor: "rgb(37, 99, 235)" },
+              "&:hover": { color: "white" },
             }}
           >
             {loading ? (

@@ -115,32 +115,22 @@ const Login = () => {
             alignItems: "center",
             justifyContent: "center",
             minHeight: "100vh",
-            backgroundColor: "rgb(17, 24, 39)",
-            p: 3,
+            // backgroundColor: "rgb(17, 24, 39)",
           }}
+          className="bg-gradient-to-b from-gray-800 to-gray-950/100 mt-4"
         >
-          <Button
-            startIcon={<FiArrowLeft />}
-            onClick={() => navigate(-1)}
-            sx={{
-              position: "absolute",
-              top: 60,
-              left: 20,
-              padding: "8px",
-              color: "rgb(156, 163, 175)",
-            }}
-          >
-            Back
-          </Button>
-
           <Paper
             elevation={3}
             sx={{
               p: 4,
               width: "100%",
               maxWidth: "400px",
-              backgroundColor: "rgb(31, 41, 55)",
+              backgroundColor: "rgb(31, 41, 59)",
+              border: "4px solid",
+              borderColor: "divider", // or use a specific color
+              borderRadius: 4, // or "4px" or any value you prefer
             }}
+            className="shadow-2xl"
           >
             <Typography
               variant="h4"
@@ -236,13 +226,12 @@ const Login = () => {
               <Button
                 type="submit"
                 fullWidth
-                variant="contained"
+                variant="outlined"
                 disabled={loading}
                 sx={{
                   py: 1.5,
                   mb: 2,
-                  backgroundColor: "rgb(59, 130, 246)",
-                  "&:hover": { backgroundColor: "rgb(37, 99, 235)" },
+                  "&:hover" : {color : "white"}
                 }}
               >
                 {loading ? (

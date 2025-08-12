@@ -188,6 +188,7 @@ const RandomEmail = () => {
     <Box
       sx={{
         p: 3,
+        mt: 4,
         minHeight: "100vh",
         backgroundColor: "rgb(17, 24, 39)",
         color: "rgb(229, 231, 235)",

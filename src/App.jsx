@@ -25,13 +25,11 @@ const App = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="min-h-screen flex flex-col bg-gray-900 text-gray-200">
+      <div className="min-h-screen flex flex-col bg-gradient-to-r from-gray-800 to-gray-950/100 text-gray-200">
         <Navbar />
 
-        <main className="flex-grow pt-16">
-          {" "}
+        <main className="flex-grow pt-5">
           <div className="p-4">
-            {" "}
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

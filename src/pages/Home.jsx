@@ -9,9 +9,9 @@ const Home = () => {
   const { auth } = useSelector((store) => store);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-200">
+    <div className="min-h-screen bg-gray-900 text-gray-200 mt-8">
       {/* Hero Section */}
-      <div className="bg-gray-800 text-white py-16">
+      <div className="bg-gray-800 text-white py-10">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <Typography
             variant="h3"

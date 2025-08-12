@@ -37,23 +37,23 @@ export const darkTheme = createTheme({
       },
     },
     // Style for different severity levels
-    // MuiAlert: {
-    //   styleOverrides: {
-    //     root: ({ ownerState }) => ({
-    //       ...(ownerState.severity === "error" && {
-    //         backgroundColor: "#2d0000",
-    //       }),
-    //       ...(ownerState.severity === "success" && {
-    //         backgroundColor: "#002d00",
-    //       }),
-    //       ...(ownerState.severity === "info" && {
-    //         backgroundColor: "#00002d",
-    //       }),
-    //       ...(ownerState.severity === "warning" && {
-    //         backgroundColor: "#2d2d00",
-    //       }),
-    //     }),
-    //   },
-    // },
+    MuiAlert: {
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          ...(ownerState.severity === "error" && {
+            backgroundColor: "#2d0000",
+          }),
+          ...(ownerState.severity === "success" && {
+            backgroundColor: "#002d00",
+          }),
+          ...(ownerState.severity === "info" && {
+            backgroundColor: "#00002d",
+          }),
+          ...(ownerState.severity === "warning" && {
+            backgroundColor: "#2d2d00",
+          }),
+        }),
+      },
+    },
   },
 });
