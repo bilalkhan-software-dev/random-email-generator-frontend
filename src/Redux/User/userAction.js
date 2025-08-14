@@ -65,7 +65,6 @@ export const saveUserEmailAction = (email) => async (dispatch) => {
   dispatch({ type: SAVE_EMAIL_REQUEST });
   try {
     const response = await api.post(`/user/save-email/${email}`);
-    console.log("Email saved successfully:", response.data.data);
 
     const { message, data, statusCode } = handleSuccess(response);
     dispatch({
@@ -85,7 +84,6 @@ export const fetchUserSavedEmailAction = () => async (dispatch) => {
   dispatch({ type: FETCH_USER_SAVE_RANDOM_EMAIL_REQUEST });
   try {
     const response = await api.get("/user/saved-emails/");
-    console.log("Fetched user saved emails: ", response.data.data);
     const { message, data, statusCode } = handleSuccess(response);
     dispatch({
       type: FETCH_USER_SAVE_RANDOM_EMAIL_SUCCESS,

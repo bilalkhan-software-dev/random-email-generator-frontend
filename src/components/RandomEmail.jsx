@@ -62,7 +62,12 @@ const RandomEmail = () => {
   const [page, setPage] = useState(1);
   const [generationMode, setGenerationMode] = useState("normal");
   const rowsPerPage = 20;
-  let generatedEmails = email?.emails?.email || [];
+
+  let generatedEmails =
+    generationMode === "normal" ? email.emails.email : user.emails.email;
+  console.log("User filtere email: ", user.emails.email);
+  console.log("email: ", email.emails.email);
+  console.log("Generated emails : ", generatedEmails);
 
   if (auth.user && generationMode === "filtered") {
     generatedEmails = user.emails?.email || [];
@@ -488,9 +493,7 @@ const RandomEmail = () => {
                 >
                   <Typography variant="h6" sx={{ color: "white" }}>
                     Generated Emails (
-                    {email.emails?.totalEmailGenerated ||
-                      generatedEmails.length}
-                    )
+                    {generatedEmails.length})
                   </Typography>
 
                   <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>

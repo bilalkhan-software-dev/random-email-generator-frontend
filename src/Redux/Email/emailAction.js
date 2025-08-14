@@ -30,9 +30,6 @@ export const generateRandomByCategoryAction =
         `${APP_BASE_URL}/emails/${cateory}/${length}`
       );
 
-      console.log("Backend api: ", APP_BASE_URL);
-
-      console.log("Generated Email: ", respones.data);
 
       dispatch({
         type: GET_RANDOM_EMAIL_BY_CATEGORY_SUCCESS,

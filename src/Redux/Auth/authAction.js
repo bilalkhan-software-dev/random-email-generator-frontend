@@ -23,7 +23,6 @@ export const loginUserAction = (credentials) => async (dispatch) => {
       credentials
     );
     const { data } = response.data;
-    console.log("Login response data:", data);
     const token = data.token;
 
     if (token) {
@@ -62,7 +61,6 @@ export const registerUserAction = (userData) => async (dispatch) => {
       userData
     );
     const { data } = response.data;
-    console.log("Register response data:", data);
     const token = data.token;
 
     if (token) {
