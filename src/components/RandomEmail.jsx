@@ -64,10 +64,7 @@ const RandomEmail = () => {
   const rowsPerPage = 20;
 
   let generatedEmails =
-    generationMode === "normal" ? email.emails.email : user.emails.email;
-  console.log("User filtere email: ", user.emails.email);
-  console.log("email: ", email.emails.email);
-  console.log("Generated emails : ", generatedEmails);
+    generationMode === "normal" ? email?.emails?.email : user?.emails?.email;
 
   if (auth.user && generationMode === "filtered") {
     generatedEmails = user.emails?.email || [];
@@ -156,7 +153,7 @@ const RandomEmail = () => {
 
   const saveEmail = async (email) => {
     console.log("Saving email:", email.email);
-    if (!auth.user) {
+    if (!auth?.user) {
       setSnackbarMessage("Please login to save emails");
       setSnackbarSeverity("warning");
       setSnackbarOpen(true);
@@ -165,14 +162,14 @@ const RandomEmail = () => {
 
     await dispatch(saveUserEmailAction(email.email));
 
-    if (user.message) {
+    if (user?.message) {
       setSnackbarMessage("Email saved successfully!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       return;
     }
 
-    if (user.error) {
+    if (user?.error) {
       setSnackbarMessage("Error saving email");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
@@ -184,7 +181,7 @@ const RandomEmail = () => {
     setSnackbarOpen(false);
   };
 
-  const paginatedEmails = generatedEmails.slice(
+  const paginatedEmails = generatedEmails?.slice(
     (page - 1) * rowsPerPage,
     page * rowsPerPage
   );
@@ -201,7 +198,7 @@ const RandomEmail = () => {
     >
       <Typography variant="h4" gutterBottom sx={{ color: "white", mb: 2 }}>
         Random Email Generator
-        {auth.user && (
+        {auth?.user && (
           <Chip
             label={
               generationMode === "filtered" ? "Filtered Mode" : "Normal Mode"
@@ -477,7 +474,7 @@ const RandomEmail = () => {
           <CircularProgress />
         </Box>
       ) : (
-        generatedEmails.length > 0 && (
+        generatedEmails?.length > 0 && (
           <>
             <Card sx={{ backgroundColor: "rgb(31, 41, 55)" }}>
               <CardContent>
@@ -492,8 +489,7 @@ const RandomEmail = () => {
                   }}
                 >
                   <Typography variant="h6" sx={{ color: "white" }}>
-                    Generated Emails (
-                    {generatedEmails.length})
+                    Generated Emails ({generatedEmails?.length})
                   </Typography>
 
                   <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
@@ -531,9 +527,9 @@ const RandomEmail = () => {
                         Copy All
                       </Button>
                     </Tooltip>
-                    {generatedEmails.length > rowsPerPage && (
+                    {generatedEmails?.length > rowsPerPage && (
                       <Pagination
-                        count={Math.ceil(generatedEmails.length / rowsPerPage)}
+                        count={Math.ceil(generatedEmails?.length / rowsPerPage)}
                         page={page}
                         onChange={(e, newPage) => setPage(newPage)}
                         color="primary"
@@ -594,7 +590,7 @@ const RandomEmail = () => {
                                 justifyContent: "flex-end",
                               }}
                             >
-                              <Tooltip title="Copy" arrow>
+                              <Tooltip title="Copy" arrow placement="left">
                                 <IconButton
                                   onClick={() => copyToClipboard(email.email)}
                                   sx={{
@@ -608,7 +604,11 @@ const RandomEmail = () => {
                                   <FiCopy />
                                 </IconButton>
                               </Tooltip>
-                              <Tooltip title="Save to your account" arrow>
+                              <Tooltip
+                                title="Save to your account"
+                                placement="top"
+                                arrow
+                              >
                                 <IconButton
                                   onClick={() => saveEmail(email)}
                                   sx={{
@@ -667,10 +667,10 @@ const RandomEmail = () => {
                     borderRadius: "4px",
                   }}
                 >
-                  {generatedEmails.map((e, i) => (
+                  {generatedEmails?.map((e, i) => (
                     <div key={i}>
                       {e.email}
-                      {i < generatedEmails.length - 1 && <br />}
+                      {i < generatedEmails?.length - 1 && <br />}
                     </div>
                   ))}
                 </Paper>
